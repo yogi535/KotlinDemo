@@ -1,6 +1,6 @@
-
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -12,6 +12,18 @@ suspend fun main() {
     println("Hello, ")
 
     val flow = flowOf(2, 3, 5)
+    getFlow().collect {
+        //  println("collect=$it")
+    }
+
+    // getList().map { it*it }.collect { println("collect $it") }
+
+    getFlowList().collect {
+        println(it)
+        it.forEach {
+            print("$it ")
+        }
+    }
 
 
 //    // println("flow=$flow")
@@ -50,7 +62,7 @@ suspend fun main() {
     }
 
     myFlow.collect {
-        println("collect=$it")
+        //println("collect=$it")
     }
     runBlocking {
 
@@ -290,4 +302,20 @@ suspend fun function2(): String {
     val message = "function2"
     println("Launch $message")
     return message
+}
+
+
+fun getFlow(): Flow<Int> {
+    return flow {
+        for (i in 0..10)
+            emit(i * i)
+    }
+}
+
+
+fun getFlowList(): Flow<List<Int>> {
+    val list = listOf<Int>(3, 3, 5, 6, 7, 8, 1, 2, 5, 2, 6)
+    return flow {
+        emit(list)
+    }
 }
