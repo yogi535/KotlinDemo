@@ -1,27 +1,38 @@
+
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
 
 suspend fun main() {
 
     println("Hello, ")
+    flow {
+        emit(1)
+        delay(50)
+        emit(2)
+    }.collectLatest { value ->
+        println("Collecting $value")
+        delay(100) // Emulate work
+        println("$value collected")
+    }
 
     val flow = flowOf(2, 3, 5)
+    val liveData= mutableListOf<Int>()
+
     getFlow().collect {
         //  println("collect=$it")
     }
 
-    // getList().map { it*it }.collect { println("collect $it") }
+  //  getFlow().map { it }.collect { println("collect= $it") }
+
+
 
     getFlowList().collect {
         println(it)
         it.forEach {
-            print("$it ")
+            // print("$it ")
         }
     }
 
@@ -307,8 +318,10 @@ suspend fun function2(): String {
 
 fun getFlow(): Flow<Int> {
     return flow {
-        for (i in 0..10)
+        for (i in 0..10) {
             emit(i * i)
+            delay(500)
+        }
     }
 }
 
@@ -318,4 +331,8 @@ fun getFlowList(): Flow<List<Int>> {
     return flow {
         emit(list)
     }
+}
+fun getLiveData()
+{
+    //return LiveData
 }
